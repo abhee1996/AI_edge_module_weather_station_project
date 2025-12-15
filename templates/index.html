@@ -1,0 +1,175 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Weather Dashboard</title>
+    <script>
+        function updateData() {
+            fetch('/api/data')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('temp').innerText = data.data.temp;
+                    document.getElementById('hum').innerText = data.data.hum;
+                    document.getElementById('press').innerText = data.data.press;
+                    document.getElementById('pred_num').innerText = data.pred_num;
+                    document.getElementById('pred_str').innerText = data.pred_str;
+                });
+        }
+        setInterval(updateData, 60000);  // Update every minute
+    </script>
+</head>
+<body onload="updateData()">
+    <h1>Real-Time Weather</h1>
+    <p>Temperature: <span id="temp"></span> °C</p>
+    <p>Humidity: <span id="hum"></span> %</p>
+    <p>Pressure: <span id="press"></span> hPa</p>
+    <p>Predicted Numeric Condition: <span id="pred_num"></span></p>
+    <p>Predicted Weather: <span id="pred_str"></span></p>
+    <img src="/plot" alt="Chart">
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>IoT Weather Station</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@latest/dist/chartjs-plugin-zoom.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <style>
+        body { background-color: #e3f2fd; font-family: 'Roboto', sans-serif; }
+        .header { background-color: #bbdefb; padding: 10px; text-align: center; border-radius: 8px; margin: 10px; }
+        .card { border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin: 15px; }
+        .large-value { font-size: 2.5em; color: #f44336; text-align: center; }
+        .mini-chart { height: 100px; }
+        #trend-chart { height: 200px; }
+    </style>
+    <script>
+        function updateData() {
+            fetch('/api/data')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('temp-value').innerText = data.data.temp + ' °C';
+                    document.getElementById('hum-value').innerText = data.data.hum + ' %';
+                    document.getElementById('press-value').innerText = data.data.press + ' hPa';
+                    document.getElementById('pred_num').innerText = data.pred_num;
+                    document.getElementById('pred_str').innerText = data.pred_str;
+                    updateMiniCharts(data.data);
+                });
+            fetch('/api/history')
+                .then(response => response.json())
+                .then(hist => {
+                    updateTrendChart(hist);
+                });
+        }
+
+        function updateMiniCharts(current) {
+            // Mini bar for temp
+            new Chart(document.getElementById('temp-mini').getContext('2d'), {
+                type: 'bar', data: { labels: ['Now'], datasets: [{ data: [current.temp], backgroundColor: '#f44336' }] },
+                options: { scales: { y: { beginAtZero: false } }, plugins: { legend: { display: false } } }
+            });
+            // Mini bar for hum
+            new Chart(document.getElementById('hum-mini').getContext('2d'), {
+                type: 'bar', data: { labels: ['Now'], datasets: [{ data: [current.hum], backgroundColor: '#2196f3' }] },
+                options: { scales: { y: { beginAtZero: true, max: 100 } }, plugins: { legend: { display: false } } }
+            });
+            // Mini bar for press
+            new Chart(document.getElementById('press-mini').getContext('2d'), {
+                type: 'bar', data: { labels: ['Now'], datasets: [{ data: [current.press], backgroundColor: '#4caf50' }] },
+                options: { scales: { y: { beginAtZero: false } }, plugins: { legend: { display: false } } }
+            });
+        }
+
+        function updateTrendChart(hist) {
+            const ctx = document.getElementById('trend-chart').getContext('2d');
+            if (window.trendChart) window.trendChart.destroy();
+            window.trendChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: hist.timestamps.map(t => new Date(t)),
+                    datasets: [
+                        { label: 'Temperature (°C)', data: hist.temps, borderColor: '#f44336', fill: false },
+                        { label: 'Humidity (%)', data: hist.hums, borderColor: '#2196f3', fill: false },
+                        { label: 'Pressure (hPa)', data: hist.presses, borderColor: '#4caf50', fill: false, yAxisID: 'y2' }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        zoom: { zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: 'xy' }, pan: { enabled: true, mode: 'xy' } },
+                        legend: { display: true, position: 'top' }
+                    },
+                    scales: {
+                        x: { type: 'time', time: { unit: 'minute' } },
+                        y: { type: 'linear', position: 'left' },
+                        y2: { type: 'linear', position: 'right', grid: { drawOnChartArea: false } }
+                    }
+                }
+            });
+        }
+        setInterval(updateData, 60000);
+    </script>
+</head>
+<body onload="updateData()">
+    <div class="container">
+        <div class="header">
+            <h5>IoT Weather Station Real-time trends and monitoring</h5>
+        </div>
+        <div class="row">
+            <div class="col s12 m3">
+                <div class="card">
+                    <div class="card-content">
+                        <span class="card-title">Temperature</span>
+                        <p class="small-value" id="temp-value"></p>
+                        <canvas id="temp-mini" class="mini-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+           
+            <div class="col s12 m3">
+               
+                <div class="card teal darken-1 waves-effect waves-light tooltipped" data-tooltip="Predicted weather based on model">
+                    <div class="card-content white-text">
+                        <span class="card-title">Humidity</span>
+                        <p class="small-value" id="hum-value"></p>
+
+                        <canvas id="hum-mini" class="mini-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m3">
+                    
+                    <div class="card teal darken-1 waves-effect waves-light tooltipped" data-tooltip="Predicted weather based on model">
+                    <div class="card-content white-text">
+                        <span class="card-title">Pressure</span>
+                        <p class="small-value" id="press-value"></p>
+
+                        <canvas id="press-mini" class="mini-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m6">
+                <div class="card teal darken-1 waves-effect waves-light tooltipped" data-tooltip="Numeric scale from -9 (severe cold) to 9 (severe warm)">
+                    <div class="card-content white-text">
+                        <span class="card-title">Predicted Numeric Condition</span>
+                        <p id="pred_num"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m6">
+                <div class="card teal darken-1 waves-effect waves-light tooltipped" data-tooltip="Predicted weather based on model">
+                    <div class="card-content white-text">
+                        <span class="card-title">Predicted Weather</span>
+                        <p id="pred_str"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
