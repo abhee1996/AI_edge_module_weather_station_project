@@ -10,13 +10,13 @@ from sklearn.preprocessing import StandardScaler
 import tensorflow as tf
 import joblib
 
-# Load scaler and model (adjust as in step 5)
+# Load scaler and model 
 scaler = joblib.load('scaler.pkl')
-model = tf.keras.models.load_model('best_nn_model.h5')  # Or joblib.load('best_model.pkl')
+model = tf.keras.models.load_model('best_nn_model.h5')  
 
 sense = SenseHat()
 
-# Use the condition_to_weather from step 5
+# Use the condition_to_weather
 def condition_to_weather(pred):
     pred = round(pred)
     if pred == -4: return  "Severe/Moderate"
