@@ -12,7 +12,7 @@ import joblib
 
 # Load scaler and model 
 scaler = joblib.load('scaler.pkl')
-model = tf.keras.models.load_model('best_nn_model.h5')  
+model = tf.keras.models.load_model('NN_model.h5')  
 
 sense = SenseHat()
 
