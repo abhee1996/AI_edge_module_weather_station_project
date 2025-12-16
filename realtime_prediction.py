@@ -5,9 +5,8 @@ import tensorflow as tf
 import joblib
 
 sense = SenseHat()
-scaler = joblib.load('scaler.pkl')  # From preprocessing
+scaler = joblib.load('scaler.pkl')  
 
-# If NN: 
 model = tf.keras.models.load_model('NN_model.h5')
 
 

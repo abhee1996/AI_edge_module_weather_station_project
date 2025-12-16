@@ -9,36 +9,35 @@ def map_weather_to_condition(weather):
         return np.nan
     weather = weather.lower()
     if 'thunderstorms' in weather and ('heavy' in weather or 'moderate' in weather):
-        return 9  # Severe positive (warm storms)
+        return 9  
     elif 'thunderstorms' in weather:
-        return 7  # Thunderstorms
+        return 7  
     elif 'moderate' in weather or 'heavy' in weather or 'blowing' in weather:
-        return 8  # Moderate/severe
+        return 8  
     elif 'freezing' in weather or 'ice' in weather or 'pellets' in weather:
-        return -6  # Freezing/ice
+        return -6  
     elif 'snow' in weather:
-        return -5  # Snow-related
+        return -5  
     elif 'rain' in weather:
-        return 4  # Rain-related
+        return 4  
     elif 'drizzle' in weather:
-        return 3  # Drizzle
+        return 3  
     elif 'fog' in weather or 'haze' in weather:
-        return -1  # Fog/haze
+        return -1  
     elif 'cloudy' in weather:
-        return 1  # Cloudy
+        return 1  
     elif 'clear' in weather:
-        return 0  # Clear/neutral
+        return 0  
     else:
-        return 0  # Default neutral
+        return 0 
 
         
-# Load data
 df = pd.read_csv('weather_data_labeled.csv')
-print("Loaded columns:", df.columns.tolist())  # Debug
-df.columns = df.columns.str.strip()  # Strip spaces
+print("Loaded columns:", df.columns.tolist()) 
+df.columns = df.columns.str.strip()  
 df['condition'] = df['Weather'].apply(map_weather_to_condition)
 
-df = df[['temperature', 'humidity', 'pressure', 'condition']]  # Select only numerics
+df = df[['temperature', 'humidity', 'pressure', 'condition']]  
 df.rename(columns={'Temp_C': 'temperature', 'Rel Hum_%': 'humidity', 'Press_kPa': 'pressure','Weather':'condition'}, inplace=True)
 
 df['pressure'] = df['pressure'] * 10
@@ -58,12 +57,10 @@ X_scaled = scaler.fit_transform(X)
 
 X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
 
-# Save preprocessed data (optional)
 pd.DataFrame(X_train).to_csv('X_train.csv', index=False)
 pd.DataFrame(y_train).to_csv('y_train.csv', index=False)
 pd.DataFrame(X_test).to_csv('X_test.csv', index=False)
 pd.DataFrame(y_test).to_csv('y_test.csv', index=False)
 
-# Save scaler for later use
 import joblib
 joblib.dump(scaler, 'scaler.pkl')

@@ -1,32 +1,4 @@
-<!-- <!DOCTYPE html>
-<html>
-<head>
-    <title>Weather Dashboard</title>
-    <script>
-        function updateData() {
-            fetch('/api/data')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('temp').innerText = data.data.temp;
-                    document.getElementById('hum').innerText = data.data.hum;
-                    document.getElementById('press').innerText = data.data.press;
-                    document.getElementById('pred_num').innerText = data.pred_num;
-                    document.getElementById('pred_str').innerText = data.pred_str;
-                });
-        }
-        setInterval(updateData, 60000);  // Update every minute
-    </script>
-</head>
-<body onload="updateData()">
-    <h1>Real-Time Weather</h1>
-    <p>Temperature: <span id="temp"></span> °C</p>
-    <p>Humidity: <span id="hum"></span> %</p>
-    <p>Pressure: <span id="press"></span> hPa</p>
-    <p>Predicted Numeric Condition: <span id="pred_num"></span></p>
-    <p>Predicted Weather: <span id="pred_str"></span></p>
-    <img src="/plot" alt="Chart">
-</body>
-</html> -->
+
 
 
 <!DOCTYPE html>
@@ -119,15 +91,7 @@
             <h5>IoT Weather Station Real-time With Respberrypie and Sense-Hat</h5>
         </div>
         <div class="row">
-            <!-- <div class="col md12 lg12 s12 m3">
-                <div class="card">
-                    <div class="card-content">
-                        <span class="card-title">Temperature</span>
-                        <p class="small-value" id="temp-value"></p>
-                        <canvas id="temp-mini" class="big-chart"></canvas>
-                    </div>
-                </div>
-            </div> -->
+        
            <div class="col lg12 md12 s12 m5">
                
                 <div class="card   waves-effect waves-light tooltipped" data-tooltip="Predicted weather based on model">

@@ -10,13 +10,11 @@ from sklearn.preprocessing import StandardScaler
 import tensorflow as tf
 import joblib
 
-# Load scaler and model 
 scaler = joblib.load('scaler.pkl')
 model = tf.keras.models.load_model('NN_model.h5')  
 
 sense = SenseHat()
 
-# Use the condition_to_weather
 def condition_to_weather(pred):
     pred = round(pred)
     if pred == -4: return  "Severe/Moderate"
@@ -41,7 +39,7 @@ def predict_condition():
     print('input_data',input_data)
     input_scaled = scaler.transform(input_data)
     print('input_scaled',input_scaled)
-    prediction = model.predict(input_scaled)[0][0]  # Adjust for model type
+    prediction = model.predict(input_scaled)[0][0]  
     print('pred',prediction)
     weather_str = condition_to_weather(prediction)
     print('weather_str',weather_str)
@@ -59,7 +57,7 @@ def index():
 
 @app.route('/plot')
 def plot():
-    _, _, data = predict_condition()  # Get fresh data
+    _, _, data = predict_condition()  
     fig, ax = plt.subplots()
     ax.bar(['Temp', 'Hum', 'Press'], [data['temp'], data['hum'], data['press']])
     ax.set_ylabel('Values')
@@ -73,7 +71,7 @@ def plot():
 @app.route('/api/data')
 def api_data():
     pred_num, pred_str, data = predict_condition()
-    pred_num = float(pred_num)  # Convert np.float32 to float
+    pred_num = float(pred_num)  
     return jsonify({'data': data, 'pred_num': pred_num, 'pred_str': pred_str})
 
 if __name__ == '__main__':

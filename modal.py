@@ -18,7 +18,7 @@ y_test = pd.read_csv('y_test.csv').values.ravel()
 model = Sequential()
 model.add(Dense(64, input_dim=3, activation='relu'))
 model.add(Dense(32, activation='relu'))
-model.add(Dense(1))  # Regression output
+model.add(Dense(1)) 
 model.compile(optimizer='adam', loss='mean_squared_error')
 model.fit(X_train, y_train, epochs=100, batch_size=32, validation_split=0.2, verbose=1)
 nn_pred = model.predict(X_test)
