@@ -116,38 +116,48 @@
 <body onload="updateData()">
     <div class="container">
         <div class="header">
-            <h5>IoT Weather Station Real-time trends and monitoring</h5>
+            <h5>IoT Weather Station Real-time With Respberrypie and Sense-Hat</h5>
         </div>
         <div class="row">
-            <div class="col s12 m3">
+            <!-- <div class="col md12 lg12 s12 m3">
                 <div class="card">
                     <div class="card-content">
                         <span class="card-title">Temperature</span>
                         <p class="small-value" id="temp-value"></p>
-                        <canvas id="temp-mini" class="mini-chart"></canvas>
+                        <canvas id="temp-mini" class="big-chart"></canvas>
+                    </div>
+                </div>
+            </div> -->
+           <div class="col lg12 md12 s12 m5">
+               
+                <div class="card   waves-effect waves-light tooltipped" data-tooltip="Predicted weather based on model">
+                    <div class="card-content ">
+                        <span class="card-title">Temperature</span>
+                        <p class="small-value" id="temp-value"></p>
+
+                        <canvas id="temp-mini" class="big-chart"></canvas>
                     </div>
                 </div>
             </div>
-           
-            <div class="col s12 m3">
+            <div class="col lg12 md12 s12 m5">
                
-                <div class="card teal darken-1 waves-effect waves-light tooltipped" data-tooltip="Predicted weather based on model">
-                    <div class="card-content white-text">
+                <div class="card   waves-effect waves-light tooltipped" data-tooltip="Predicted weather based on model">
+                    <div class="card-content ">
                         <span class="card-title">Humidity</span>
                         <p class="small-value" id="hum-value"></p>
 
-                        <canvas id="hum-mini" class="mini-chart"></canvas>
+                        <canvas id="hum-mini" class="big-chart"></canvas>
                     </div>
                 </div>
             </div>
-            <div class="col s12 m3">
+            <div class="col md12 lg12 s12 m3">
                     
-                    <div class="card teal darken-1 waves-effect waves-light tooltipped" data-tooltip="Predicted weather based on model">
+                    <div class="card  waves-effect waves-light tooltipped" data-tooltip="Predicted weather based on model">
                     <div class="card-content white-text">
                         <span class="card-title">Pressure</span>
                         <p class="small-value" id="press-value"></p>
 
-                        <canvas id="press-mini" class="mini-chart"></canvas>
+                        <canvas id="press-mini" class="big-chart"></canvas>
                     </div>
                 </div>
             </div>
