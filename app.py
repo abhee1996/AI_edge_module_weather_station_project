@@ -72,13 +72,9 @@ def plot():
 
 @app.route('/api/data')
 def api_data():
-
-    # In app.py, api_data route
     pred_num, pred_str, data = predict_condition()
     pred_num = float(pred_num)  # Convert np.float32 to float
     return jsonify({'data': data, 'pred_num': pred_num, 'pred_str': pred_str})
-    # pred_num, pred_str, data = predict_condition()
-    # return jsonify({'data': data, 'pred_num': pred_num, 'pred_str': pred_str})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
